@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day-04-Project</title>
+</head>
+<body>
+    
+
+    
+    <div class="AppBody">
+        <div class="icon">
+            <img src="image/image.png" alt="" style="width: 100%; height: 300px; color: rgb(50, 212, 191);" >
+        </div> 
+
+        <h3>Drug & Drop</h3>
+        <span>OR</span>
+        <button>Browse File</button>
+        <input type="file" hidden>
+    </div>
+
+
+    <script>
+
+       const DragArea = document.querySelector(".AppBody"),
+       DragText = DragArea.querySelector("h3"),
+       button = DragArea.querySelector("button"),
+       input = DragArea.querySelector("input");
+       let MyFile ;
+
+       button.onclick = () => {
+         input.click()
+       }
+
+       input.addEventListener("change" ,function(){
+        MyFile = this.files[0];
+        DragArea.classList.add("active")
+
+        ShowMe()
+
+       })
+
+       DragArea.addEventListener("dragover", (event)=>{
+        event.preventDefault();
+        DragArea.classList.add("active");
+
+        DragText.textContent = "Release to upload File";
+       })
+
+       DragArea.addEventListener("dragleave", ()=>{
+        DragArea.classList.remove("active");
+        DragText.textContent = "Drag & Drop";
+       });
+
+
+       DragArea.addEventListener("drop", (event)=>{
+          event,preventDefault();
+          MyFile = event.dataTransfer.files[0];
+
+          ShowMe()
+       })
+
+
+       function ShowMe(){
+        let filetype = MyFile.type;
+        let VaildEx = ["image/jpeg", "image/jpg", "image/png"];
+
+        if(VaildEx.includes(filetype)){
+            
+            fileReader = new FileReader();
+
+            fileReader.onload = ()=> {
+                let imgUrl = fileReader.result;
+                let img = `<img src="${imgUrl}" alt="">`
+
+                DragArea.innerHTML = img
+            }
+            fileReader.readAsDataURL(MyFile);
+        }
+        else {
+            alert("This File is Not Valid");
+            DragArea.classList.add("active");
+            DragText.textContent = "Drag & Drop";
+        }
+       }
+ 
+    </script>
+
+
+
+
+       <style>
+
+
+            
+*{
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f1f1f1;
+    height: 100vh;
+}
+
+.AppBody{
+    border: 3px dotted #d1d6d6;
+    width: 700px;
+    height: 500px;
+    background-color: #fff;
+    box-shadow: rgb(0, 0, 0, 0.1) 0px 10px 50px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.AppBody:active{
+    border: 3px solid rgb(9, 165, 92);
+}
+
+.AppBody h3{
+    font-size: 30px;
+    font-weight: 500;
+    color: #333;
+}
+
+.AppBody span{
+    font-size: 25px;
+    font-weight: 500;
+    color: #333;
+    margin: 10px 0 15px 0;
+}
+
+.AppBody button{
+    padding: 10px 25px;
+    font-size: 20px;
+    font-weight: 500;
+    border: none;
+    background: #fff;
+    color: rgb(34, 167, 105);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.AppBody img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+
+
+       </style>
+
+
+</body>
+</html>
